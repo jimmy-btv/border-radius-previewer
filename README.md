@@ -4,7 +4,7 @@
 
 ## Check out a live version here:
 
-[https://border-radius-previewer-one.vercel.app/](Border-Radius-Previewer)
+[https://border-radius-previewer-one.vercel.app/](https://border-radius-previewer-one.vercel.app/)
 
 ## Usage:
 
