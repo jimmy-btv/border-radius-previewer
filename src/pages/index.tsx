@@ -1,6 +1,6 @@
 import { type NextPage } from "next";
 
-import React, { useRef, useState } from "react";
+import { useState } from "react";
 interface IBorderRadius {
   [key: string]: string;
   topLeftLeft: string;
@@ -38,7 +38,7 @@ const Home: NextPage = () => {
   };
 
   const mouseMoveHandler = (e: any): void => {
-    let diff = mouseStartPosition - e.pageY;
+    const diff = mouseStartPosition - e.pageY;
     let newLeft = numStart + diff;
     newLeft = newLeft > 100 ? 100 : newLeft;
     newLeft = newLeft < 0 ? 0 : newLeft;
@@ -48,7 +48,7 @@ const Home: NextPage = () => {
     });
   };
 
-  const mouseUpHandler = (e: MouseEvent): void => {
+  const mouseUpHandler = (): void => {
     window.removeEventListener("mousemove", mouseMoveHandler);
     window.removeEventListener("mouseup", mouseUpHandler);
   };
