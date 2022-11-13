@@ -1,6 +1,6 @@
 import { type NextPage } from "next";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 interface IBorderRadius {
   [key: string]: string;
   topLeftLeft: string;
@@ -14,7 +14,8 @@ interface IBorderRadius {
 }
 const Home: NextPage = () => {
   const [copySuccess, setCopySuccess] = useState<boolean>(false);
-  const [mouseStartPosition, setMouseStartPosition] = useState<number>(0);
+
+  const mouseStartPosition = useRef<number>(0);
   const [numStart, setNumStart] = useState<number>(0);
 
   const [borderRadius, setBorderRadius] = useState<IBorderRadius>({
@@ -29,16 +30,16 @@ const Home: NextPage = () => {
   });
 
   const mouseDownHandler = (e: React.MouseEvent<HTMLInputElement>): void => {
-    window.addEventListener("mousemove", mouseMoveHandler);
-    window.addEventListener("mouseup", mouseUpHandler);
-
-    setMouseStartPosition(e.pageY);
+    mouseStartPosition.current = e.pageY;
     setNumStart(Number(borderRadius[(e.target as HTMLFormElement).name]));
     setNumStart(isNaN(numStart) ? 0 : numStart);
+    window.addEventListener("mousemove", mouseMoveHandler);
+    window.addEventListener("mouseup", mouseUpHandler);
+    return;
   };
 
   const mouseMoveHandler = (e: any): void => {
-    const diff = mouseStartPosition - e.pageY;
+    const diff = mouseStartPosition.current - e.pageY;
     let newLeft = numStart + diff;
     newLeft = newLeft > 100 ? 100 : newLeft;
     newLeft = newLeft < 0 ? 0 : newLeft;
@@ -46,11 +47,13 @@ const Home: NextPage = () => {
       ...borderRadius,
       [e.target.name]: newLeft,
     });
+    return;
   };
 
   const mouseUpHandler = (): void => {
     window.removeEventListener("mousemove", mouseMoveHandler);
     window.removeEventListener("mouseup", mouseUpHandler);
+    return;
   };
 
   const onChangeRadiusHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,6 +75,7 @@ const Home: NextPage = () => {
           onMouseDown={mouseDownHandler}
           min={0}
           max={100}
+          inputMode={"none"}
         />
         <input
           type="text"
