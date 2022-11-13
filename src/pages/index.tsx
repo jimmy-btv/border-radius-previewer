@@ -1,6 +1,6 @@
 import { type NextPage } from "next";
 
-import { useRef, useState } from "react";
+import { MutableRefObject, useRef, useState } from "react";
 interface IBorderRadius {
   [key: string]: string;
   topLeftLeft: string;
@@ -16,23 +16,25 @@ const Home: NextPage = () => {
   const [copySuccess, setCopySuccess] = useState<boolean>(false);
 
   const mouseStartPosition = useRef<number>(0);
+  const targetName = useRef<string>("");
   const [numStart, setNumStart] = useState<number>(0);
 
   const [borderRadius, setBorderRadius] = useState<IBorderRadius>({
-    topLeftLeft: "0",
-    topLeftRight: "0",
-    topRightLeft: "0",
-    topRightRight: "0",
-    bottomLeftLeft: "0",
-    bottomLeftRight: "0",
-    bottomRightLeft: "0",
-    bottomRightRight: "0",
+    topLeftLeft: "10",
+    topLeftRight: "10",
+    topRightLeft: "10",
+    topRightRight: "10",
+    bottomLeftLeft: "10",
+    bottomLeftRight: "10",
+    bottomRightLeft: "10",
+    bottomRightRight: "10",
   });
 
   const mouseDownHandler = (e: React.MouseEvent<HTMLInputElement>): void => {
     mouseStartPosition.current = e.pageY;
     setNumStart(Number(borderRadius[(e.target as HTMLFormElement).name]));
     setNumStart(isNaN(numStart) ? 0 : numStart);
+    targetName.current = (e.target as HTMLFormElement).name;
     window.addEventListener("mousemove", mouseMoveHandler);
     window.addEventListener("mouseup", mouseUpHandler);
     return;
@@ -40,14 +42,16 @@ const Home: NextPage = () => {
 
   const mouseMoveHandler = (e: any): void => {
     const diff = mouseStartPosition.current - e.pageY;
+
     let newLeft = numStart + diff;
+
     newLeft = newLeft > 100 ? 100 : newLeft;
     newLeft = newLeft < 0 ? 0 : newLeft;
+    //* bugFix: e.target changes when mouse moves outside of box on chrome
     setBorderRadius({
       ...borderRadius,
-      [e.target.name]: newLeft,
+      [targetName.current]: newLeft.toString(),
     });
-    return;
   };
 
   const mouseUpHandler = (): void => {
