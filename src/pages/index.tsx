@@ -124,8 +124,8 @@ const Home: NextPage = () => {
             borderStartEndRadius: `${borderRadius.topRightLeft}% ${borderRadius.topRightRight}%`,
             borderEndStartRadius: `${borderRadius.bottomLeftRight}% ${borderRadius.bottomLeftLeft}% `,
             borderEndEndRadius: `${borderRadius.bottomRightLeft}% ${borderRadius.bottomRightRight}%`,
-            background: "linear-gradient(145deg, #1a325b, #162a4d)",
-            boxShadow: `inset 18px 18px 36px #0a1322,inset -18px -18px 36px #264b88`,
+            background: "linear-gradient(145deg, #1c3661, #172d52)",
+            boxShadow: `12px 12px 23px #0a1424, -12px -12px 23px #2a5092`,
           }}
         ></div>
         <div className="ml-5 grid content-between">
