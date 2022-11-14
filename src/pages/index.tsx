@@ -120,9 +120,9 @@ const Home: NextPage = () => {
         <div
           className=" h-96 w-96 "
           style={{
-            borderStartStartRadius: `${borderRadius.topLeftLeft}% ${borderRadius.topLeftRight}%`,
+            borderStartStartRadius: ` ${borderRadius.topLeftRight}% ${borderRadius.topLeftLeft}%`,
             borderStartEndRadius: `${borderRadius.topRightLeft}% ${borderRadius.topRightRight}%`,
-            borderEndStartRadius: `${borderRadius.bottomLeftLeft}% ${borderRadius.bottomLeftRight}%`,
+            borderEndStartRadius: `${borderRadius.bottomLeftRight}% ${borderRadius.bottomLeftLeft}% `,
             borderEndEndRadius: `${borderRadius.bottomRightLeft}% ${borderRadius.bottomRightRight}%`,
             background: "linear-gradient(145deg, #1a325b, #162a4d)",
             boxShadow: `inset 18px 18px 36px #0a1322,inset -18px -18px 36px #264b88`,
@@ -190,9 +190,9 @@ const Home: NextPage = () => {
           setCopySuccess(true);
         }}
         style={{
-          borderStartStartRadius: `${borderRadius.topLeftLeft}% ${borderRadius.topLeftRight}%`,
+          borderStartStartRadius: `${borderRadius.topLeftRight}% ${borderRadius.topLeftLeft}% `,
           borderStartEndRadius: `${borderRadius.topRightLeft}% ${borderRadius.topRightRight}%`,
-          borderEndStartRadius: `${borderRadius.bottomLeftLeft}% ${borderRadius.bottomLeftRight}%`,
+          borderEndStartRadius: `${borderRadius.bottomLeftRight}% ${borderRadius.bottomLeftLeft}% `,
           borderEndEndRadius: `${borderRadius.bottomRightLeft}% ${borderRadius.bottomRightRight}%`,
         }}
       >
