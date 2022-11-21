@@ -1,6 +1,6 @@
 import { type NextPage } from "next";
 
-import { MutableRefObject, useRef, useState } from "react";
+import { useRef, useState } from "react";
 interface IBorderRadius {
   [key: string]: string;
   topLeftLeft: string;
@@ -12,12 +12,21 @@ interface IBorderRadius {
   bottomRightLeft: string;
   bottomRightRight: string;
 }
+
+// ? ------------------ *
+// ! This could all be split into multiple components but I wanted to keep it simple as it's a single page app
+// ? ------------------ *
+
 const Home: NextPage = () => {
   const [copySuccess, setCopySuccess] = useState<boolean>(false);
+  const [numStart, setNumStart] = useState<number>(0);
+  const [boxSize, setBoxSize] = useState<{ width: number; height: number }>({
+    width: 384,
+    height: 384,
+  });
 
   const mouseStartPosition = useRef<number>(0);
   const targetName = useRef<string>("");
-  const [numStart, setNumStart] = useState<number>(0);
 
   const [borderRadius, setBorderRadius] = useState<IBorderRadius>({
     topLeftLeft: "10",
@@ -68,8 +77,8 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div className="flex h-screen flex-col items-center justify-center bg-[#182f55]">
-      <div className="mb-4 flex h-10 w-96 justify-between ">
+    <div className="flex flex-col items-center justify-center bg-[#182f55]">
+      <div className="my-4 flex h-10 w-96 justify-between">
         <input
           type="text"
           value={borderRadius.topLeftRight}
@@ -116,9 +125,8 @@ const Home: NextPage = () => {
             max={100}
           />
         </div>
-
+        {/* // ! below div could be put into it's own component */}
         <div
-          className=" h-96 w-96 "
           style={{
             borderStartStartRadius: ` ${borderRadius.topLeftRight}% ${borderRadius.topLeftLeft}%`,
             borderStartEndRadius: `${borderRadius.topRightLeft}% ${borderRadius.topRightRight}%`,
@@ -126,6 +134,8 @@ const Home: NextPage = () => {
             borderEndEndRadius: `${borderRadius.bottomRightLeft}% ${borderRadius.bottomRightRight}%`,
             background: "linear-gradient(145deg, #1c3661, #172d52)",
             boxShadow: `12px 12px 23px #0a1424, -12px -12px 23px #2a5092`,
+            height: `${boxSize.height}px`,
+            width: `${boxSize.width}px`,
           }}
         ></div>
         <div className="ml-5 grid content-between">
@@ -174,36 +184,71 @@ const Home: NextPage = () => {
           max={100}
         />
       </div>
+      <div className="w-70 flex flex-col">
+        <div className="flex flex-row items-center justify-between">
+          <label htmlFor="height" className="pr-2 text-gray-200">
+            Box height:
+          </label>
+          <input
+            type="number"
+            name="height"
+            className="w-12"
+            value={boxSize.height}
+            onChange={(e) =>
+              setBoxSize({
+                ...boxSize,
+                height: +e.target.value > 440 ? 440 : +e.target.value,
+              })
+            }
+          />
+        </div>
 
-      <p className="text-gray-100">
+        <div className="mt-2 flex flex-row items-center justify-between">
+          <label htmlFor="width" className="pr-2 text-gray-200">
+            Box width:
+          </label>
+          <input
+            type="number"
+            name="width"
+            className="w-12"
+            value={boxSize.width}
+            onChange={(e) =>
+              setBoxSize({
+                ...boxSize,
+                width: +e.target.value > 440 ? 440 : +e.target.value,
+              })
+            }
+          />
+        </div>
+      </div>
+
+      <p className="m-1 text-gray-100">
         border-radius: {borderRadius.topLeftRight}% {borderRadius.topRightLeft}%{" "}
         {borderRadius.bottomLeftRight}% {borderRadius.bottomRightLeft}% /{" "}
         {borderRadius.topLeftLeft}% {borderRadius.topRightRight}%{" "}
         {borderRadius.bottomLeftLeft}% {borderRadius.bottomRightRight}%
       </p>
-      <button
-        className="m-1 border border-black bg-gradient-to-r from-[#BCED0C] to-[#1ac929] p-3"
-        onClick={() => {
-          navigator.clipboard.writeText(
-            `border-radius: ${borderRadius.topLeftRight}% ${borderRadius.topRightLeft}% ${borderRadius.bottomLeftRight}% ${borderRadius.bottomRightLeft}% / ${borderRadius.topLeftLeft}% ${borderRadius.topRightRight}% ${borderRadius.bottomLeftLeft}% ${borderRadius.bottomRightRight}%`
-          );
-          setCopySuccess(true);
-        }}
-        style={{
-          borderStartStartRadius: `${borderRadius.topLeftRight}% ${borderRadius.topLeftLeft}% `,
-          borderStartEndRadius: `${borderRadius.topRightLeft}% ${borderRadius.topRightRight}%`,
-          borderEndStartRadius: `${borderRadius.bottomLeftRight}% ${borderRadius.bottomLeftLeft}% `,
-          borderEndEndRadius: `${borderRadius.bottomRightLeft}% ${borderRadius.bottomRightRight}%`,
-        }}
-      >
-        Copy to clipboard
-      </button>
-      {copySuccess && (
-        <p className="bg-gradient-to-r from-[#BCED0C] to-[#1ac929] bg-clip-text text-4xl font-extrabold text-transparent">
-          Copied to clipboard!
-        </p>
-      )}
-      <p className="mt-5 text-gray-200">
+      <div className="flex flex-row items-center">
+        <button
+          className="m-1 border border-black bg-gradient-to-r from-[#BCED0C] to-[#1ac929] p-3"
+          onClick={() => {
+            navigator.clipboard.writeText(
+              `border-radius: ${borderRadius.topLeftRight}% ${borderRadius.topRightLeft}% ${borderRadius.bottomLeftRight}% ${borderRadius.bottomRightLeft}% / ${borderRadius.topLeftLeft}% ${borderRadius.topRightRight}% ${borderRadius.bottomLeftLeft}% ${borderRadius.bottomRightRight}%`
+            );
+            setCopySuccess(true);
+          }}
+          style={{
+            borderStartStartRadius: `${borderRadius.topLeftRight}% ${borderRadius.topLeftLeft}% `,
+            borderStartEndRadius: `${borderRadius.topRightLeft}% ${borderRadius.topRightRight}%`,
+            borderEndStartRadius: `${borderRadius.bottomLeftRight}% ${borderRadius.bottomLeftLeft}% `,
+            borderEndEndRadius: `${borderRadius.bottomRightLeft}% ${borderRadius.bottomRightRight}%`,
+          }}
+        >
+          Copy to clipboard
+        </button>
+        {copySuccess && <p className="text-4xl font-extrabold ">✅</p>}
+      </div>
+      <p className="my-5 text-gray-200">
         Made with 💚 by James Ball. Check out the repo{" "}
         <span>
           <a
